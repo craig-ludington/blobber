@@ -4,7 +4,25 @@ Store, fetch, and delete binary large objects (BLOB) in a PostgreSQL database.
 
 ## Usage
 
-FIXME
+Create a database "blobber".
+
+Update src/blobber/config.clj by adding your credentials to the :admin map:
+
+    (def db {:example {:subprotocol "postgresql"
+                       :subname     "//localhost:5432/blobber"
+                       :user        "jrandomhacker"
+                       :password    "SeKrit"}
+             :admin   {:subprotocol "postgresql"
+                       :subname     "//localhost:5432/blobber"
+                       :user        "superuser"
+                       :password    "VerySecurePassword"}
+             })
+
+Then create the schema, by running:
+
+  lein run -m blobber.migration
+
+
 
 ## License
 
