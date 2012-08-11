@@ -2,39 +2,50 @@
   (:require [blobber.config :as config]
             [ clojure.java.io :as io]))
 
-(defn uuid [] (str (java.util.UUID/randomUUID)))
+(defn- uuid [] (str (java.util.UUID/randomUUID)))
 
-(defn relative-path [s]
+(defn- relative-path [s]
   "Return the string s with a / inserted after each character."
   (apply str (interpose "/" s)))
 
-(defn full-path
+(defn- full-path
   "Return a filesystem path starting at root for the string s."
   ([root s]
      (str root "/" (relative-path s)))
   ([s]
      (full-path config/root-directory s)))
 
-(defn mkdir-p [p]
+(defn- mkdir-p [p]
   "Just like the Unix command 'mkdir -p'. True if path p was created, false if p existed."
   (io/make-parents (str p "/x")))
 
-(defn blob-url [p]
-  "Return the path p with a 'file://' prefix and a '/blob' suffix."
-  (str "file://" p "/blob"))
+(defn- blob-path [key]
+  "Return a Unix absolute pathname for key."
+  (str (full-path key) "/blob"))
+
+(defn- blob-url [key]
+  "Return a file:// url for key."
+  (str "file://" (blob-path key)))
 
 (defn create [blob]
   "Create a new blob and return its key."
   (let [key (uuid)
         path (full-path key)]
     (when  (mkdir-p path)
-      (spit (blob-url path) blob)
+      (spit (blob-url key) blob)
       key)))
 
-;; java.io.FileNotFoundException
 (defn fetch [key]
   "Return the blob for the key."
   (try
-    (slurp (blob-url (full-path key)))
+    (slurp (blob-url key))
+    (catch java.io.FileNotFoundException e
+      "Stop fooling around.")))
+
+(defn delete [key]
+  "Destroy the blob for the key.  There is no 'Are you sure?'."
+  (try
+    (do (io/delete-file (blob-path key))
+        (println (str key " deleted.")))
     (catch java.io.FileNotFoundException e
       "Stop fooling around.")))

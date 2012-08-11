@@ -1,7 +1,43 @@
 ================================================================================
+HOW DO YOU get a nice REPL?
+
+(use 'clojure.repl)
+(dir clojure.repl)
+  apropos
+  demunge
+  dir
+  dir-fn
+  doc
+  find-doc
+  pst
+  root-cause
+  set-break-handler!
+  source
+  source-fn
+  stack-element-str
+  thread-stopper
+
+(use 'clojure.pprint)
+  don't forget to (dir clojure.pprint) -- my favorite:
+
+  clojure.pprint/pp
+  ([])
+  Macro
+    A convenience macro that pretty prints the last thing output. This is
+  exactly equivalent to (pprint *1).
+
+================================================================================
 HOW DO YOU use curl to POST raw data?
 
-curl -nd "some data to post" -H "Content-Type: application/data" http://localhost:8080/
+curl -i -nd "some data to post" -H "Content-Type: application/data" http://localhost:8080/
+
+more info: http://blogs.plexibus.com/2009/01/15/rest-esting-with-curl/
+
+================================================================================
+HOW DO YOU use curl to DELETE?
+
+curl -i -X DELETE http://localhost:8080/somekey
+
 
 ================================================================================
 HOW DO YOU get code automatically reloaded in development:
