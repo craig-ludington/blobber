@@ -19,10 +19,22 @@
   "Just like the Unix command 'mkdir -p'. True if path p was created, false if p existed."
   (io/make-parents (str p "/x")))
 
+(defn blob-url [p]
+  "Return the path p with a 'file://' prefix and a '/blob' suffix."
+  (str "file://" p "/blob"))
+
 (defn create [blob]
   "Create a new blob and return its key."
   (let [key (uuid)
         path (full-path key)]
     (when  (mkdir-p path)
-      (spit (str "file://" path "/blob" ) blob)
+      (spit (blob-url path) blob)
       key)))
+
+;; java.io.FileNotFoundException
+(defn fetch [key]
+  "Return the blob for the key."
+  (try
+    (slurp (blob-url (full-path key)))
+    (catch java.io.FileNotFoundException e
+      "Stop fooling around.")))
