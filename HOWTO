@@ -1,4 +1,9 @@
 ================================================================================
+HOW DO YOU use curl to POST raw data?
+
+curl -nd "some data to post" -H "Content-Type: application/data" http://localhost:8080/
+
+================================================================================
 HOW DO YOU get code automatically reloaded in development:
 
 Add this to project.clj: [ring/ring-devel "1.1.1"]
