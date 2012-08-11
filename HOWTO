@@ -1,3 +1,8 @@
+================================================================================
+HOW DO YOU get code automatically reloaded in development:
+
+Add this to project.clj: [ring/ring-devel "1.1.1"]
+
 http://stackoverflow.com/questions/1665760/compojure-development-without-web-server-restarts
 
 There are two main things that you want:

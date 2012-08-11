@@ -1,18 +1,20 @@
 (ns blobber.core
-  (:use [compojure.core :only [defroutes GET POST]])
+  (:use [compojure.core :only [defroutes GET POST]]
+        [ring.middleware reload])
   (:require [blobber.config :as config]
             [compojure.route :as route]
             [compojure.handler :as handler]
             [clojure.string :as str]
-            ;; [ring.util.response :as ring]
+            [ring.util.response]
             [ring.adapter.jetty :as ring]))
 
 (defroutes routes
-  (GET  "/" [] "I'm Blobber."
+  (GET  "/" [] "I'm Blobber.  What do you think of that"
         )
   (POST "/" { body :body } (str "This is what you posted:\n" (slurp body) "\nDone.\n")))
 
-(def application (handler/site routes))
+(def application (-> (handler/site routes)
+                     (wrap-reload '(blobber.core))))
 
 
 
