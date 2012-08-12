@@ -10,6 +10,9 @@ to copy the data originally.
 
 ## Usage
 
+FIXME!!! 
+See test-with-curl -- it's a shell script demonstrating use.
+
 ### Migrate data from a PostgreSQL database (optional)
 Create a database "blobber".
 
