@@ -1,6 +1,7 @@
 (ns blobber.storage
   (:require [blobber.config :as config]
-            [ clojure.java.io :as io]))
+            [ clojure.java.io :as io]
+            [ring.util.response :as rsp]))
 
 (defn- uuid [] (str (java.util.UUID/randomUUID)))
 
@@ -40,12 +41,17 @@
   (try
     (slurp (blob-url key))
     (catch java.io.FileNotFoundException e
-      "Stop fooling around.")))
+      (rsp/status (rsp/response key) 404))
+    (catch java.io.IOException e
+      (rsp/status (rsp/response key) 404))))
 
 (defn delete [key]
   "Destroy the blob for the key.  There is no 'Are you sure?'."
   (try
     (do (io/delete-file (blob-path key))
-        (str key " deleted."))
+        key)
     (catch java.io.FileNotFoundException e
-      "Stop fooling around.")))
+      (rsp/status (rsp/response key) 403))
+    (catch java.io.IOException e
+      (rsp/status (rsp/response key) 403))))
+
