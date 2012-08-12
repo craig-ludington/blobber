@@ -30,10 +30,11 @@ Update src/blobber/config.clj by adding your credentials to the :admin map:
 
 For testing, you can create the schema, by running:
 
-  lein run -m blobber.migration
+  lein run -m blobber.test-database
 
 Finally, copy the data over from the PostgreSQL database, by running:
-   FIXME!!!
+
+  lein run -m blobber.migrate-from-postgresql
 
 ## License
 
