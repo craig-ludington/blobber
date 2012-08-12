@@ -46,6 +46,6 @@
   "Destroy the blob for the key.  There is no 'Are you sure?'."
   (try
     (do (io/delete-file (blob-path key))
-        (println (str key " deleted.")))
+        (str key " deleted."))
     (catch java.io.FileNotFoundException e
       "Stop fooling around.")))

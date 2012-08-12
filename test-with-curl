@@ -1,0 +1,19 @@
+data=' militia PLO SDI pipeline broadside Reno UMTS csystems STARLAN quiche Firewalls Mantis Centro gamma '
+
+key=$(curl --silent -d "$data" -H "Content-Type: application/data" http://localhost:8080/)
+
+echo "Stored: '$key'"
+
+val=$(curl --silent http://localhost:8080/$key)
+
+echo "Fetched: '$val'"
+
+[[ $val = $data ]] || echo "Fetched value doesn't match stored value" >/dev/stderr
+
+
+response=$(curl --silent -i -X DELETE http://localhost:8080/$key)
+
+echo "Destroyed: $key"
+
+echo "Attempt to re-fetch '$key' should fail"
+curl --silent -i http://localhost:8080/$key
