@@ -11,10 +11,10 @@
 
 (defroutes routes
   (GET    "/"        []             "<h1>I'm Blobber.</h1>")
-  (GET    ["/:uuid"] [uuid]         (storage/fetch uuid))             ;; TODO more robust if there's a uuid regex
+  (GET    ["/:uuid"] [uuid]         (storage/fetch uuid))    ;; TODO more robust if there's a uuid regex
   (DELETE ["/:uuid"] [uuid]         (storage/delete uuid))
   (POST   "/"        { body :body } (storage/create (slurp body)))
-  (ANY    "*"        []             (not-found))
+  (ANY    "*"        []             (route/not-found)))
 
 (def application (-> (handler/site routes)
                      (wrap-reload '(blobber.core))

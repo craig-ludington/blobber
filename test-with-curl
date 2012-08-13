@@ -15,10 +15,10 @@ response=$(curl --silent -i -X DELETE http://localhost:8080/$key)
 
 echo "Destroyed: $key"
 
-echo "Attempt to re-fetch '$key' should fail with a 404"
+echo "Attempt to re-fetch '$key' should fail with a 410"
 curl --silent -i http://localhost:8080/$key
 echo
 
-echo "Attempt to re-destroy '$key' should return a 403"
+echo "Attempt to re-destroy '$key' should return a 410"
 curl --silent -i -X DELETE http://localhost:8080/$key
 echo
