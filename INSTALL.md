@@ -140,10 +140,13 @@ Here are the steps:
 ** (use 'blobber.core)
 ** (start)
 
-There's a shell script in the blobber/ directory called 
+There's a quick smoke-test shell script in the blobber/ directory called 
 * test-with-curl
 
-That script will create files in $HOME/blobs/ -- you can over-ride that by 
+There's a full test suite of course.  To run the test suite:
+* lein test
+
+Running tests will create files in $HOME/blobs/ -- you can over-ride that by 
 setting the BLOBBER_ROOT_DIRECTORY environment variable to something else.
 
 For example:
