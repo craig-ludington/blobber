@@ -31,9 +31,9 @@ If you have a JVM installed, Lein is the only thing you'll need.
 
 #### SPECIAL NOTE FOR Aneesh!!! or Luda!!!
 Do this instead:
-curl http://qwerty.cashnetusa.com/quick-lein-package.tar.gz
-tar zxf quick-lein-package.tar.gz
-Now SKIP to the section "Test Lein".  
+* curl http://qwerty.cashnetusa.com/quick-lein-package.tar.gz
+* tar zxf quick-lein-package.tar.gz
+* Now SKIP to the section "Test Lein".  
 #### END SPECIAL NOTE FOR Aneesh!!!
 
 Follow the instructions at:
