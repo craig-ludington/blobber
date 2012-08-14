@@ -4,7 +4,8 @@
   (:require [filesystem-trie.core :as trie]
             [ring.util.response :as rsp]))
 
-(defn- root-directory [] (or (System/getenv "BLOBBER_ROOT_DIRECTORY") "./blobs/"))
+(defn- root-directory [] (or (System/getenv "BLOBBER_ROOT_DIRECTORY")
+                             (str (System/getenv "HOME") "/blobs/")))
 
 (defn create [blob]
   "Create a new blob and return its key.
