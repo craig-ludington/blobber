@@ -8,14 +8,16 @@
             [ring.adapter.jetty :as ring]
             [blobber.storage :as storage]))
 
+(def uuid-regexp #"[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}")
+
 (defn- listen-port [] (or (System/getenv "BLOBBER_LISTEN_PORT") 8080))
   
 (defroutes routes
-  (GET    "/"        []             "<h1>I'm Blobber.</h1>")
-  (GET    ["/:uuid"] [uuid]         (storage/fetch uuid))    ;; TODO more robust if there's a uuid regex
-  (DELETE ["/:uuid"] [uuid]         (storage/delete uuid))
-  (POST   "/"        { body :body } (storage/create (slurp body)))
-  (ANY    "*"        []             (route/not-found)))
+  (GET    "/"                          []             "<h1>I'm Blobber.</h1>")
+  (GET    ["/:uuid" :uuid uuid-regexp] [uuid]         (storage/fetch uuid))
+  (DELETE ["/:uuid" :uuid uuid-regexp] [uuid]         (storage/delete uuid))
+  (POST   "/"                          { body :body } (storage/create (slurp body)))
+  (ANY    "*"                          []             (route/not-found (str "<h1>Key not found.</h1>"))))
 
 (def application (-> (handler/site routes)
                      (wrap-reload '(blobber.core))

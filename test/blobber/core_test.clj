@@ -20,7 +20,7 @@
   (let [data "spies Juiliett Class Submarine oil Bush  Axis of Evil  Rand Corporation IRA JFK Rumsfeld"
         response (create data)]
     (is (= (response :status) 201))
-    (is (re-matches  #"[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}" (response :body)))))
+    (is (re-matches  blobber.core/uuid-regexp (response :body)))))
 
 (deftest fetch-test
     (let [data "Europol DES pink noise Abu Ghraib CNCIS North Korea Manfurov White Water spies Geraldton IMF"
@@ -32,7 +32,6 @@
       (is (= data (fetch-response :body)))
       ;; Bad fetch
       (let [bad-fetch-response (fetch "This is NOT a key!")]
-        (println "Bad-fetch-response:" bad-fetch-response)
         (is (= 410 (bad-fetch-response :status)))
         (is (= nil (bad-fetch-response :body))))))
 
@@ -48,7 +47,6 @@
       (let [bad-delete-response (delete key)]
         (is (= 200 (delete-response :status)))
         (is (= key (delete-response :body))))
-
       ;; Double-check that it's actually deleted.
       (let [fetch-response (fetch key)]
         (is (= 410 (fetch-response :status)))
