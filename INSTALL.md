@@ -1,0 +1,121 @@
+
+## How to install Blobber
+
+## Prerequisites:
+
+### Java virtual machine
+
+Any recent Java virtual machine (JVM) will do.
+
+Type this at the command line:
+
+    $ java -version
+    java version "1.6.0_33"
+    Java(TM) SE Runtime Environment (build 1.6.0_33-b03-424-11M3720)
+    Java HotSpot(TM) 64-Bit Server VM (build 20.8-b03-424, mixed mode)
+
+If you see some output like the above, you're OK.
+Otherwise, go to 
+
+* https://github.com/technomancy/leiningen#installation
+
+and install a JVM.
+
+### Leiningen
+
+Leiningen, or "Lein" is a shell script that manages installing, running, and testing Clojure.
+If you have a JVM installed, Lein is the only thing you'll need.
+(Except for the Blobber code, and we'll tell you how to get that later.)
+
+#### Get Lein
+
+Follow the instructions at:
+* https://github.com/technomancy/leiningen#installation
+
+All you really need to do is get a copy of the lein shell script, make it executable,
+then run
+
+* lein self-install
+
+Leiningen will download clojure.jar, and a few other Java libraries, and install them
+in your home directory.  The subdirectories lein uses are $HOME/.lein, and $HOME/.m2,
+but you don't really need to know that.
+
+#### Test lein
+
+If lein is on your PATH, just type
+
+* lein repl
+
+If lein isn't in a directory on your PATH, type
+
+* /path/to/lein repl
+
+You should see output something like this:
+
+    $ lein repl
+    nREPL server started on port 56096
+    REPL-y 0.1.0-beta8
+    Clojure 1.4.0
+        Exit: Control+D or (exit) or (quit)
+    Commands: (user/help)
+        Docs: (doc function-name-here)
+              (find-doc "part-of-name-here")
+      Source: (source function-name-here)
+              (user/sourcery function-name-here)
+     Javadoc: (javadoc java-object-or-class-here)
+    Examples from clojuredocs.org: [clojuredocs or cdoc]
+              (user/clojuredocs name-here)
+              (user/clojuredocs "ns-here" "name-here")
+    
+    user=> 
+
+Lein started a REPL (Read-Eval-Print-Loop) for you.  A REPL is like Ruby's IRB, 
+with a lot more capabilities.
+
+The "user=>" is the REPL's prompt.
+
+Type a Lisp expression, for example:
+
+    user=> (+ 2 3)
+    (+ 2 3)
+    5
+
+The output 5 is the result of calling the "+" function on the numbers 2 and 3.
+That's pretty much what you'd expect, right?
+
+To exit, just press Control+D and you're back at the shell prompt.
+
+
+### Installing Blobber
+
+Now that you've got a JVM and Leiningen, you're ready to install Blobber.
+
+#### Blobber is free software
+
+Blobber is free software, hosted on Github.
+
+To install it, source and all, use git clone:
+
+    git clone git://github.com/craig-ludington/blobber.git
+
+### Configuration
+
+Blobber works right out of the box, but if you want to customize it, there are a couple of 
+environment variables to set:
+
+* BLOBBER_LISTEN_PORT
+** Blobber binds to this port and accepts HTTP requests.
+** Default is 8080
+
+* BLOBBER_ROOT_DIRECTORY
+** Blobber creates its filesystem-based trie (http://en.wikipedia.org/wiki/Trie) in this directory.
+** Default is $HOME/blobs/.
+
+### Running
+
+We know how to do this from the REPL, but we're still figuring out how to do it from the command-line.
+
+
+
+

@@ -10,6 +10,10 @@ to a REST API.
 
 See test-with-curl -- it's a shell script demonstrating use.
 
+## Deployment
+
+See INSTALL.
+
 ## License
 
 Copyright © 2012 Craig Brent Ludington
