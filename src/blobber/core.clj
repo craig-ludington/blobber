@@ -1,8 +1,7 @@
 (ns blobber.core
   (:use [compojure.core :only [defroutes GET POST DELETE ANY]]
         [ring.middleware reload stacktrace])
-  (:require [blobber.config :as config]
-            [compojure.route :as route]
+  (:require [compojure.route :as route]
             [compojure.handler :as handler]
             [clojure.string :as str]
             [ring.util.response]

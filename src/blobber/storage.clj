@@ -1,8 +1,7 @@
 (ns blobber.storage
     #^{:author "Craig Ludington",
        :doc "Create/fetch/delete BLOBs and return HTTP responses for Ring."}
-  (:require [blobber.config :as config]
-            [filesystem-trie.core :as trie]
+  (:require [filesystem-trie.core :as trie]
             [ring.util.response :as rsp]))
 
 (defn- root-directory [] (or (System/getenv "BLOBBER_ROOT_DIRECTORY") "./blobs/"))
