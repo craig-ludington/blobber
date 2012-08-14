@@ -23,14 +23,15 @@
    Response/body:
      200/blob Body is the requested BLOB.
      410/key  Failed to fetch key (assume it's GONE)."
-  (or (trie/fetch (root-directory) key)
-      (rsp/status (rsp/response key) 410)))
+  (let [blob (trie/fetch (root-directory) key)
+        status (if blob 200 410)]
+    (rsp/status (rsp/response blob) status)))
 
 (defn delete [key]
   "Destroy the BLOB for the key.
    Response/body:
      200/key  Successfully deleted key.
      410/key  Failed to delete key (assume it's GONE)."
-  (or (trie/delete (root-directory) key)
-      (rsp/status (rsp/response key) 410)))
-
+  (let [k (trie/delete (root-directory) key)
+        status (if k 200 410)]
+    (rsp/status (rsp/response k) status))) 
