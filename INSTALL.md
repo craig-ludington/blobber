@@ -26,11 +26,27 @@ and install a JVM.
 Leiningen, or "Lein" is a shell script that manages installing, running, and testing Clojure.
 If you have a JVM installed, Lein is the only thing you'll need.
 (Except for the Blobber code, and we'll tell you how to get that later.)
-
+ 
 #### Get Lein
+
+#### SPECIAL NOTE FOR Aneesh!!! or Luda!!!
+Do this instead:
+curl http://qwerty.cashnetusa.com/quick-lein-package.tar.gz
+tar zxf quick-lein-package.tar.gz
+Now SKIP to the section "Test Lein".  
+#### END SPECIAL NOTE FOR Aneesh!!!
 
 Follow the instructions at:
 * https://github.com/technomancy/leiningen#installation
+
+##### For the impatient:
+You can just open a terminal and copy/paste the next 6 commands into the terminal.
+* cd
+* curl https://raw.github.com/technomancy/leiningen/preview/bin/lein
+* mkdir bin
+* mv lein bin
+* chmod +x bin/lein
+* export PATH=~/bin:$PATH
 
 All you really need to do is get a copy of the lein shell script, make it executable,
 then run
@@ -116,6 +132,28 @@ environment variables to set:
 
 We know how to do this from the REPL, but we're still figuring out how to do it from the command-line.
 
+Here are the steps:
 
+* cd blobber/ (or wherever you put it when you did "git clone")
+* lein repl
+* At the lein REPL (remember,the prompt is "user=>"):
+** (use 'blobber.core)
+** (start)
 
+There's a shell script in the blobber/ directory called 
+* test-with-curl
 
+That script will create files in $HOME/blobs/ -- you can over-ride that by 
+setting the BLOBBER_ROOT_DIRECTORY environment variable to something else.
+
+For example:
+
+* export BLOBBER_ROOT_DIRECTORY=/tmp/myblobs/
+
+If you don't want to run on port 8080 (the default):
+
+* export BLOBBER_LISTEN_PORT=9001
+
+If you want to stop the Blobber service, just press Control-D in the repl.
+
+Later we'll tell you how to launch Blobber as a daemon process.
