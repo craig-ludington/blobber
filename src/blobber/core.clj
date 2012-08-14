@@ -9,6 +9,8 @@
             [ring.adapter.jetty :as ring]
             [blobber.storage :as storage]))
 
+(defn- listen-port [] (or (System/getenv "BLOBBER_LISTEN_PORT") 8080))
+  
 (defroutes routes
   (GET    "/"        []             "<h1>I'm Blobber.</h1>")
   (GET    ["/:uuid"] [uuid]         (storage/fetch uuid))    ;; TODO more robust if there's a uuid regex
@@ -21,7 +23,7 @@
                      (wrap-stacktrace)))
 
 (defn start []
-  (ring/run-jetty #'application {:port (or config/port 8080) :join? false}))
+  (ring/run-jetty #'application {:port (listen-port) :join? false}))
 
 (defn -main []
   (start))
