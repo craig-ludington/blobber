@@ -65,18 +65,21 @@ Now the user "hacker" can use the Tomcat administrative web interface and deploy
 Blobber works right out of the box, but if you want to customize it, there are a couple of 
 environment variables to set:
 * BLOBBER_LISTEN_PORT
-** Blobber binds to this port and accepts HTTP requests.
-** Default is 8080
+Blobber binds to this port and accepts HTTP requests.
+Default is 8080
 
 * BLOBBER_ROOT_DIRECTORY
-** Blobber creates its filesystem-based trie (http://en.wikipedia.org/wiki/Trie) in this directory.
-** Default is $HOME/blobs/.
+Blobber creates its filesystem-based trie (http://en.wikipedia.org/wiki/Trie) in this directory.
+Default is $HOME/blobs/.
 
 If you put Tomcat in /usr/local/tomcat, you can start Tomcat like this:
 * sudo bash
 * export BLOBBER_ROOT_DIRECTORY=/var/blobs 
-** N.B. That assumes Tomcat is running as root.
 * /usr/local/tomcat/bin/startup.sh
+
+N.B. Storing blobs in /var/blobs/ assumes Tomcat is running as root.
+Tomcat supports running as an unprivileged user too.  We won't tell you
+how to do that.
 
 If you put Tomcat in /usr/local/tomcat, you can stop Tomcat like this:
 * sudo bash
