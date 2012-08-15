@@ -145,15 +145,24 @@ you should see:
 
 
 ## Smoke Test
-There's a quick smoke-test shell script in the blobber/ directory called 
-* test-with-curl
+There's a quick smoke-test shell script that uses curl to POST, GET, and DELETE blobs.
+Copy it from:
+* https://github.com/craig-ludington/blobber/blob/master/test-with-curl
+Then run it with:
+* ./test-with-curl
 
-You can execute that and look at the output to make sure everything's working.
+You can look at the output to make sure everything's working.
 
-You can also look at Blobber's filesystem storage using ordinary Unix shell commands:
+You can also look at Blobber's storage using ordinary Unix shell commands:
 
 * ls -l /var/blobs
 * find /var/blobs
 * etc. etc. etc.
+
+Blobs are in leaf directories.
+The name of the file containing a blob is "blob".
+Who would have guessed?
+
+* /var/blobs/1/1/4/6/c/4/5/5/-/8/2/b/6/-/4/5/d/b/-/b/d/3/2/-/f/c/2/4/2/7/8/c/0/8/7/9/blob
 
 
