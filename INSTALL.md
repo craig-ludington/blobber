@@ -93,7 +93,7 @@ if you've set up your tomcat-users.xml (see above).
 
 Here's the Blobber WAR file URL:
 * https://github.com/craig-ludington/blobber/blob/master/target/blobber-0.1.0-SNAPSHOT-standalone.war
-** If there's a later version, use it instead -- we probably just forgot to update the URL in this document.
+If there's a later version, use it instead -- we probably just forgot to update the URL in this document.
 
 #### Maybe we can just give a github url and deploy directly from there?  TODO
 
