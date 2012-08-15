@@ -84,6 +84,14 @@ If you put Tomcat in /usr/local/tomcat, you can stop Tomcat like this:
 
 ### Deploying Blobber to Tomcat
 
+Tomcat can deploy Blobber directly from Github if you give it the URL.
+There's a nice web-based user interface for deploying.  You can use the web user interface 
+if you've set up your tomcat-users.xml (see above).
+
+Here's the Blobber WAR file URL:
+* https://github.com/craig-ludington/blobber/blob/master/target/blobber-0.1.0-SNAPSHOT-standalone.war
+** If there's a later version, use it instead -- we probably just forgot to update the URL in this document.
+
 #### Maybe we can just give a github url and deploy directly from there?  TODO
 
 TODO
