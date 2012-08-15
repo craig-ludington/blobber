@@ -1,4 +1,4 @@
-
+	
 ## How to install Blobber
 
 ## Prerequisites:
@@ -66,7 +66,8 @@ Blobber works right out of the box, but if you want to customize it, there are a
 environment variables to set:
 * BLOBBER_LISTEN_PORT
 Blobber binds to this port and accepts HTTP requests.
-Default is 8080
+Default is 8080.
+FIXME!!! Under Tomcat, this probably doesn't work.  Make better instructions.  FIXME!!!
 
 * BLOBBER_ROOT_DIRECTORY
 Blobber creates its filesystem-based trie (http://en.wikipedia.org/wiki/Trie) in this directory.
@@ -88,18 +89,71 @@ If you put Tomcat in /usr/local/tomcat, you can stop Tomcat like this:
 ### Deploying Blobber to Tomcat
 
 Tomcat can deploy Blobber directly from Github if you give it the URL.
-There's a nice web-based user interface for deploying.  You can use the web user interface 
-if you've set up your tomcat-users.xml (see above).
+There's a nice web-based user interface for deploying.  
+You can use the web user interface if you've set up your tomcat-users.xml (see above).
 
-Here's the Blobber WAR file URL:
+#### Download the Blobber WAR file
+
 * https://github.com/craig-ludington/blobber/blob/master/target/blobber-0.1.0-SNAPSHOT-standalone.war
+
 If there's a later version, use it instead -- we probably just forgot to update the URL in this document.
+Remember where you put the file (on the server where you installed Tomcat)
+so you can deploy it later with Tomcat, using the web interface.
 
-#### Maybe we can just give a github url and deploy directly from there?  TODO
+#### Start up Tomcat and navigate to the "Manager"
 
-TODO
+##### Behind a firewall?
+If the machine where you installed Tomcat is behind a firewall, you may 
+have to do some ssh port-forwarding to get to Tomcat with your browser.
+
+For example, if you installed on example.com and your user name there is "bob",
+try ssh port-forwarding something like this:
+
+* ssh -L 9000:example.com:8080 bob@example.com
+
+Then you can use your local browser to access Tomcat like this:
+
+* http://localhost:9000/
+
+##### Log in to Tomcat
+Use the user-name and password for the manager-gui rolename that you configured 
+in config/tomcat-users.xml.
+In our example above, that was "hacker" and "SeKriT".
+
+After you're logged in, you'll be taken to the "Tomcat Web Application Manager" page.
+
+##### Deploy Blobber
+
+Earlier, you should have gotten the WAR file from
+* https://github.com/craig-ludington/blobber/blob/master/target/blobber-0.1.0-SNAPSHOT-standalone.war
+
+On the Tomcat web user interface, scroll down to the "Deploy" section.
+Look for "WAR file to deploy".
+There's a button "Choose file".
+Use it to select the WAR file you downloaded.
+Press the Deploy button.
+
+##### Make sure Tomcat is happy
+Look at the top of the Tomcat Web Application Manager page for the list of Applications.
+Make sure Blobber is there, and that "Running" is "true".
+
+You can click on the Blobber link (something like blobber-0.1.0-SNAPSHOT-standalone) and
+you should see:
+
+* I'm Blobber.
+
+
 
 ## Smoke Test
 There's a quick smoke-test shell script in the blobber/ directory called 
 * test-with-curl
+
+You can execute that and look at the output to make sure everything's working.
+
+You can also look at Blobber's filesystem storage using ordinary Unix shell commands:
+
+* ls -l /var/blobs
+* find /var/blobs
+* etc. etc. etc.
+
 
