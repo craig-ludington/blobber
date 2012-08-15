@@ -1,24 +1,30 @@
+# Infer the Tomcat url from the name of the WAR file
+warfile=$(echo target/*.war)
+base_file_name=${warfile##*/}
+url_fragment=${base_file_name%%.war}
+url=http://localhost:8080/${url_fragment}
+
 data=' militia PLO SDI pipeline broadside Reno UMTS csystems STARLAN quiche Firewalls Mantis Centro gamma '
 
-key=$(curl --silent -d "$data" -H "Content-Type: application/data" http://localhost:8080/)
+key=$(curl --silent -d "$data" -H "Content-Type: application/data" ${url})
 
 echo "Stored: '$key'"
 
-val=$(curl --silent http://localhost:8080/$key)
+val=$(curl --silent ${url}/${key})
 
 echo "Fetched: '$val'"
 
 [[ $val = $data ]] || echo "Fetched value doesn't match stored value" >/dev/stderr
 
 
-response=$(curl --silent -i -X DELETE http://localhost:8080/$key)
+response=$(curl --silent -i -X DELETE ${url}/${key})
 
 echo "Destroyed: $key"
 
 echo "Attempt to re-fetch '$key' should fail with a 410"
-curl --silent -i http://localhost:8080/$key
+curl --silent -i ${url}/${key}
 echo
 
 echo "Attempt to re-destroy '$key' should return a 410"
-curl --silent -i -X DELETE http://localhost:8080/$key
+curl --silent -i -X DELETE ${url}/${key}
 echo
