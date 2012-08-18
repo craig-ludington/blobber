@@ -1,4 +1,4 @@
-(defproject blobber "0.1.0-SNAPSHOT"
+(defproject blobber "1.0.0"
   :description "Store, fetch, and delete binary large objects (BLOB) in PostgreSQL."
   :url "https://github.com/craig-ludington/blobber"
   :license {:name "Eclipse Public License"
