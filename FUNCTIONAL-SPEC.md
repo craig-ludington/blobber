@@ -40,12 +40,16 @@ The URL for Blobber depends on your configuration, so for simplicity's sake we'l
 ###### Input
 Make an HTTP connection to
 * http://example.com/blobber/
+
 and POST arbitrary data.
+
 ###### Output
 If successful, the HTTP response will be
 * Status 201 (created)
 * Body: a key, which you can use for retrieving that blob in the future.
+
 Keys are GUUIDs, for example,
+
 * 3384f8ee-0c30-40e2-b9ae-d1cb22a84ae1
 
 ##### GET
