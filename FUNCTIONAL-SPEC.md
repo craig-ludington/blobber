@@ -89,6 +89,10 @@ If you supplied an improper key (not in GUUID format) the HTTP response will be
 ##### PUT
 HTTP PUT is not supported because all Blobber data is immutable.
 
+A PUT response is the same for any other request not documented above: 404.
 
-## Blob Client Functional Specification
+
+## BlobberClient Functional Specification
 ### Introduction
+
+
