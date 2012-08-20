@@ -2,7 +2,7 @@
 warfile=$(echo target/*.war)
 base_file_name=${warfile##*/}
 url_fragment=${base_file_name%%.war}
-url=http://localhost:8080/${url_fragment}
+url=http://localhost:8080/
 
 data=' militia PLO SDI pipeline broadside Reno UMTS csystems STARLAN quiche Firewalls Mantis Centro gamma '
 
