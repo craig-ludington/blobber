@@ -56,26 +56,33 @@ Keys are GUUIDs, for example,
 ###### Input
 Make an HTTP connection to
 * http://example.com/blobber/$KEY
+
 Replace '$KEY' with a key you received in the body of a POST.
 ###### Output
 If successful, the HTTP response will be
 * Status 200 
 * Body: the stream of bytes you previously stored for that key
+
 If you supplied a proper key but the GET failed, the HTTP response will be
+
 * Status 410 (gone)
+
 If you supplied an improper key (not in GUUID format) the HTTP response will be
 * Status 404
 
 ##### DELETE
 Make an HTTP connection to
 * http://example.com/blobber/$KEY
+
 Replace '$KEY' with a key you received in the body of a POST.
 ###### Output
 If successful, the HTTP response will be
 * Status 200 
 * Body: the key for the blob you wanted to delete
+
 If you supplied a proper key but the DELETE failed, the HTTP response will be
 * Status 410 (gone)
+
 If you supplied an improper key (not in GUUID format) the HTTP response will be
 * Status 404
 
