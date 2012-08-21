@@ -1,4 +1,4 @@
-# Blobber and BlobClient Functional Specification
+# Blobber and Blobberclient Functional Specification
 
 ## Introduction
 
@@ -9,11 +9,11 @@ Its  HTTP API provides POST, GET, and DELETE.  PUT is forbidden.
 It was originally written to move BLOBS from a PostgreSQL database 
 to a REST API, but it can be used for anything you'd like to store.
 
-### BlobClient
-BlobClient is a Blobber client library, written in Ruby.
+### BlobberClient
+BlobberClient is a Blobber client library, written in Ruby.
 It's been tested on Ruby 1.8.7 and Ruby 1.9.3.
 
-BlobClient provides a thin layer of abstraction over the HTTP API
+Blobberclient provides a thin layer of abstraction over the HTTP API
 that Blobber supports.
 
 ## Blobber Functional Specification
@@ -32,7 +32,7 @@ Installing Blobber is covered in a separate document (https://github.com/craig-l
 Blobber does not provide client authentication.  Instead, it relies on network firewall rules and the like to restrict access to specified clients.
 
 #### HTTP API
-The HTTP API doesn't require anything special to use.  It's a typical REST API.  In addition to the BlobClient, we've also used curl, wget, and Chrome.
+The HTTP API doesn't require anything special to use.  It's a typical REST API.  In addition to the Blobberclient, we've also used curl, wget, and Chrome.
 
 The URL for Blobber depends on your configuration, so for simplicity's sake we'll just use "http://example.com/blobber" as the base URL in our examples.
 
@@ -94,5 +94,10 @@ A PUT response is the same for any other request not documented above: 404.
 
 ## BlobberClient Functional Specification
 ### Introduction
+BlobberClient is distributed as a Ruby gem (available at https://github.com/craig-ludington/blobber-client).
+
+Install the blobber-client-1.0.0.gem in the usual fashion and require 'blobber_client' in your Ruby source file.
+
+
 
 
