@@ -1,0 +1,31 @@
+Make sure you're using Java 7
+
+  tomcat # export JAVA_HOME='/Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Home'
+  tomcat # bin/startup.sh 
+  Using CATALINA_BASE:   /usr/local/tomcat
+  Using CATALINA_HOME:   /usr/local/tomcat
+  Using CATALINA_TMPDIR: /usr/local/tomcat/temp
+  Using JRE_HOME:        /Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Home
+  Using CLASSPATH:       /usr/local/tomcat/bin/bootstrap.jar:/usr/local/tomcat/bin/tomcat-juli.jar
+  tomcat # 
+
+Double-check with the Tomcat Manager application.  Click "Server Status" and look for:
+
+  Server Information
+  Tomcat Version	JVM Version	JVM Vendor	OS Name	OS Version	OS Architecture	Hostname	IP Address
+  Apache Tomcat/7.0.29	1.7.0_06-b24	Oracle Corporation	Mac OS X	10.7.4	x86_64	roshi.local	192.168.2.103
+
+Give a user manager-script role:
+  <tomcat-users>
+    <role rolename="manager-gui"/>
+    <role rolename="manager-script"/>
+    <user username="craigl" password="blob-blob" roles="manager-gui,manager-script"/>
+  </tomcat-users>
+
+Enter this in your browser (You'll be challenged for a username/password):
+
+  http://localhost:8080/manager/text/deploy?path=/blobber&war=file:/Users/craigl/src/blobber/target/blobber-0.99.1-standalone.war
+
+You should see this in response:
+
+  OK - Deployed application at context path /blobber
