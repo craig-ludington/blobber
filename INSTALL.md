@@ -20,8 +20,8 @@ Now install Java 7. Good directions for installing Java on Ubuntu:
 
 Test the Java version
   $ java -version
-  java version "1.7.0_06"
-  Java(TM) SE Runtime Environment (build 1.7.0_06-b24)
+  java version "1.7.0\_06"
+  Java(TM) SE Runtime Environment (build 1.7.0\_06-b24)
   Java HotSpot(TM) Server VM (build 23.2-b09, mixed mode)
 
 If you see some output like the above, you're OK.
@@ -45,8 +45,8 @@ Go to the Apache Tomcat downloads page and get the latest version (currently 7.0
 #### Unpack Tomcat in /usr/local
 * sudo bash
 * cd /usr/local
-* tar xzf $THE_TOMCAT_TAR_FILE         # Obviously an example ;)  -- use the real file name!
-* cd /usr/local/$NEW_TOMCAT_DIRECTORY  # ditto
+* tar xzf $THE\_TOMCAT\_TAR\_FILE         # Obviously an example ;)  -- use the real file name!
+* cd /usr/local/$NEW\_TOMCAT\_DIRECTORY  # ditto
 
 #### Configure Tomcat
 In the config/ subdirectory of the Tomcat installation, you'll find a file named:
@@ -82,15 +82,16 @@ When you run bin/startup.sh, you'll see messages about Tomcat's configuration:
         Using CLASSPATH:       /usr/local/tomcat/bin/bootstrap.jar:/usr/local/tomcat/bin/tomcat-juli.jar
 
 #### Check for Java 7
-Look carefully at JRE_HOME.  Make sure it is the directory where you installed Java 7.
-If JRE_HOME doesn't lead to Java 7, Blobber won't run.
+Look carefully at JRE\_HOME.  Make sure it is the directory where you installed Java 7.
+If JRE\_HOME doesn't lead to Java 7, Blobber won't run.
 
 If neccessary, you can force Tomcat to use the Java version you installed by
-setting the environment variable JAVA_HOME:
+setting the environment variable JAVA\_HOME:
 
-* export JAVA_HOME='/path/to/java7/'
+* export JAVA\_HOME='/path/to/java7/'
 
 For example:
+
         tomcat # export JAVA_HOME='/Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Home'
         tomcat # bin/startup.sh 
         Using CATALINA_BASE:   /usr/local/tomcat
@@ -134,12 +135,12 @@ You should see this in response:
 By default, Blobber stores its data in $HOME/blobs.  That's probably not where you want it.
 You can override that by setting an environment variable:
 
-* BLOBBER_ROOT_DIRECTORY
+* BLOBBER\_ROOT\_DIRECTORY
 
 For example:
 
-        export BLOBBER_ROOT_DIRECTORY=/var/blobs
-        export JAVA_HOME=/usr/local/java
+        export BLOBBER\_ROOT\_DIRECTORY=/var/blobs
+        export JAVA\_HOME=/usr/local/java
         /usr/local/tomcat/bin/startup.sh
 
 #### Final steps
