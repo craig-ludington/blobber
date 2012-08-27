@@ -37,7 +37,7 @@ pass() {
 }
 
 $DEBUG && echo "POST $size bytes"
-data="$(dd if=/dev/random of=- bs=1 count=$size >/dev/null 2>&1)"
+data="$(dd if=/dev/urandom bs=1 count=$size >/dev/null 2>&1)"
 
 key=$(curl --silent -d "$data" -H "Content-Type: application/data" ${url})
 [[ $key = '' ]] && fail "POST didn't return a key"
