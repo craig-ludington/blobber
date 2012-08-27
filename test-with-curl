@@ -22,7 +22,7 @@ fi
 
 echo "DEBUG: $DEBUG"
 
-url=${BLOBBER_URL:-http://localhost:3000}
+url=${BLOBBER_URL:-http://localhost:8080/blobber}
 host=$(uname -n)
 date=$(date '+%Y-%m-%d:%H:%M:%S')
 size=$(( 1024 + ($RANDOM * 10)))
