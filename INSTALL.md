@@ -1,4 +1,3 @@
-	
 ## How to install Blobber
 
 ## Prerequisites:
@@ -30,8 +29,11 @@ If you see some output like the above, you're OK.
 ## Tomcat
 
 Blobber is distributed as a WAR file suitable for deployment under Apache Tomcat.
-So first you'll have to install Tomcat, then you can deploy the WAR file for Blobber
-using Tomcat's web-based management program.
+So first you'll have to install Tomcat, then you can deploy the WAR file for Blobber.
+Tomcat provides a variety of deployment methods, all of which should work.
+
+We'll document the simplest method that we've found that also lets you specify
+the path component of the URL for Blobber.  But first install Tomcat.
 
 ### Install Tomcat
 
@@ -50,119 +52,114 @@ Go to the Apache Tomcat downloads page and get the latest version (currently 7.0
 In the config/ subdirectory of the Tomcat installation, you'll find a file named:
 * tomcat-users.xml
 
-Edit that file.  In the tomcat-users element, add a "manager-gui" rolename, and a username with a password:
+Edit that file.  In the tomcat-users element, add two roles, and a username with a password:
 
     <tomcat-users>
       <role rolename="manager-gui"/>
-      <user username="hacker" password="SeKriT" roles="manager-gui"/>
+      <role rolename="manager-script"/>
+      <user username="jrandomhacker" password="SeKrIt" roles="manager-gui,manager-script"/>
     </tomcat-users>
 
-Now the user "hacker" can use the Tomcat administrative web interface and deploy Blobber.
+Now the user "jrandomhacker" can use the Tomcat administrative web interface and deploy Blobber.
+For deployment, we'll use the "manager-script" role.
+The "manager-gui" role is valuable for keeping Tomcat and Blobber running through a nice
+user interface.
 
 #### Starting Tomcat
-Blobber works right out of the box, but if you want to customize it, there are a couple of 
-environment variables to set:
-* BLOBBER_LISTEN_PORT
-Blobber binds to this port and accepts HTTP requests.
-Default is 8080.
-FIXME!!! Under Tomcat, this probably doesn't work.  Make better instructions.  FIXME!!!
 
-* BLOBBER_ROOT_DIRECTORY
-Blobber creates its filesystem-based trie (http://en.wikipedia.org/wiki/Trie) in this directory.
-Default is $HOME/blobs/.
+There are scripts for starting and shutting down Tomcat in the bin directory:
 
-If you put Tomcat in /usr/local/tomcat, you can start Tomcat like this:
-* sudo bash
-* export BLOBBER_ROOT_DIRECTORY=/var/blobs 
-* /usr/local/tomcat/bin/startup.sh
+* bin/startup.sh
+* bin/shutdown.sh
 
-N.B. Storing blobs in /var/blobs/ assumes Tomcat is running as root.
-Tomcat supports running as an unprivileged user too.  We won't tell you
-how to do that.
+When you run bin/startup.sh, you'll see messages about Tomcat's configuration:
 
-If you put Tomcat in /usr/local/tomcat, you can stop Tomcat like this:
-* sudo bash
-* /usr/local/tomcat/bin/shutdown.sh
+  tomcat # bin/startup.sh 
+  Using CATALINA_BASE:   /usr/local/tomcat
+  Using CATALINA_HOME:   /usr/local/tomcat
+  Using CATALINA_TMPDIR: /usr/local/tomcat/temp
+  Using JRE_HOME:        /Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Home
+  Using CLASSPATH:       /usr/local/tomcat/bin/bootstrap.jar:/usr/local/tomcat/bin/tomcat-juli.jar
 
-### Deploying Blobber to Tomcat
+#### Check for Java 7
+Look carefully at JRE_HOME.  Make sure it is the directory where you installed Java 7.
+If JRE_HOME doesn't lead to Java 7, Blobber won't run.
 
-Tomcat can deploy the Blobber WAR file directly from Github if you give it the URL.
-(A WAR file is a special archive that Tomcat understands.)
-There's a nice web-based user interface for deploying.  
-You can use the web user interface if you've set up your tomcat-users.xml (see above).
+If neccessary, you can force Tomcat to use the Java version you installed by
+setting the environment variable JAVA_HOME:
 
-Tomcat also can deploy Blobber just by copying a file to the right directory and restaring Tomcat.
-Use either method -- both work fine.  If you don't have a browser running where the WAR file is,
-copying files may be easier.  Either way, you'll need to get a copy of the WAR file, or at least 
-have its URL.
+* export JAVA_HOME='/path/to/java7/'
 
-#### Download the Blobber WAR file
+For example:
+  tomcat # export JAVA_HOME='/Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Home'
+  tomcat # bin/startup.sh 
+  Using CATALINA_BASE:   /usr/local/tomcat
+  Using CATALINA_HOME:   /usr/local/tomcat
+  Using CATALINA_TMPDIR: /usr/local/tomcat/temp
+  Using JRE_HOME:        /Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Home
+  Using CLASSPATH:       /usr/local/tomcat/bin/bootstrap.jar:/usr/local/tomcat/bin/tomcat-juli.jar
+  tomcat # 
+
+After Tomcat is started, use the Tomcat Manager application to confirm the Java version.
+Click "Server Status" and look for:
+
+  Server Information
+  Tomcat Version	JVM Version	JVM Vendor	OS Name	OS Version	OS Architecture	Hostname	IP Address
+  Apache Tomcat/7.0.29	1.7.0_06-b24	Oracle Corporation	Mac OS X	10.7.4	x86_64	roshi.local	192.168.2.103
+
+#### Deploy the Blobber application
+
+##### Download the Blobber WAR file
 
 * https://github.com/craig-ludington/blobber/blob/master/target/blobber-0.99.1-standalone.war
 
 If there's a later version, use it instead -- we probably just forgot to update the URL in this document.
-Remember where you put the file (on the server where you installed Tomcat)
-so you can deploy it later with Tomcat, using the web interface.
-
-### Tomcat File Copying Deployment
-#### Copy the WAR File
-Copy or move blobber-0.99.1-standalone.war to 
-#### Restart Tomcat
+Remember where you put the file (on the server where you installed Tomcat).
 
 
-### Tomcat Web Deployment
-#### Start up Tomcat and navigate to the "Manager"
+##### Deploy Blobber to Tomcat
+When you deploy Blobber, you'll be challenged for a username/password;
+use the credentials you set up in conf/tomcat-users.xml for the "manager-script" role.
 
-##### Behind a firewall?
-If the machine where you installed Tomcat is behind a firewall, you may 
-have to do some ssh port-forwarding to get to Tomcat with your browser.
+Access this URL from your browser:
 
-For example, if you installed on example.com and your user name there is "bob",
-try ssh port-forwarding something like this:
+*  http://localhost:8080/manager/text/deploy?path=/blobber&war=file:/Users/craigl/src/blobber/target/blobber-0.99.1-standalone.war
 
-* ssh -L 9000:example.com:8080 bob@example.com
+You should see this in response:
 
-Then you can use your local browser to access Tomcat like this:
+*  OK - Deployed application at context path /blobber
 
-* http://localhost:9000/
+#### Configure Blobber storage
 
-##### Log in to Tomcat
-Use the user-name and password for the manager-gui rolename that you configured 
-in config/tomcat-users.xml.
-In our example above, that was "hacker" and "SeKriT".
+By default, Blobber stores its data in $HOME/blobs.  That's probably not where you want it.
+You can override that by setting an environment variable:
 
-After you're logged in, you'll be taken to the "Tomcat Web Application Manager" page.
+* BLOBBER_ROOT_DIRECTORY
 
-##### Deploy Blobber
+For example:
 
-Earlier, you should have gotten the WAR file from
-* https://github.com/craig-ludington/blobber/blob/master/target/blobber-0.99.1-standalone.war
+  export BLOBBER_ROOT_DIRECTORY=/var/blobs
+  export JAVA_HOME=/usr/local/java
+  /usr/local/tomcat/bin/startup.sh
 
-On the Tomcat web user interface, scroll down to the "Deploy" section.
-Look for "WAR file to deploy".
-There's a button "Choose file".
-Use it to select the WAR file you downloaded.
-Press the Deploy button.
+#### Final steps
 
 ##### Make sure Tomcat is happy
 Look at the top of the Tomcat Web Application Manager page for the list of Applications.
 Make sure Blobber is there, and that "Running" is "true".
 
-You can click on the Blobber link (something like blobber-0.1.0-SNAPSHOT-standalone) and
-you should see:
+Click on the Blobber link (/blobber) and you should see:
 
 * I'm Blobber.
 
-
-
-## Smoke Test
 There's a quick smoke-test shell script that uses curl to POST, GET, and DELETE blobs.
 Copy it from:
 * https://github.com/craig-ludington/blobber/blob/master/test-with-curl
 Then run it with:
 * ./test-with-curl
 
-You can look at the output to make sure everything's working.
+The script returns 0 if everything succeeded, 1 otherwise.
+Details are logged in $HOME/blobber-passs and $HOME/blobber-fail respectively.
 
 You can also look at Blobber's storage using ordinary Unix shell commands:
 
@@ -175,5 +172,3 @@ The name of the file containing a blob is "blob".
 Who would have guessed?
 
 * /var/blobs/1/1/4/6/c/4/5/5/-/8/2/b/6/-/4/5/d/b/-/b/d/3/2/-/f/c/2/4/2/7/8/c/0/8/7/9/blob
-
-
