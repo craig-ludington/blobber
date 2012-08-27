@@ -181,9 +181,17 @@ Click on the Blobber link (/blobber) and you should see:
 
 There's a quick smoke-test shell script that uses curl to POST, GET, and DELETE blobs.
 Copy it from:
+
 * https://github.com/craig-ludington/blobber/blob/master/test-with-curl
-Then run it with:
+
+Then run it like this:
+
 * ./test-with-curl
+
+There are two environment variables used by test-with-curl
+
+* BLOBBER\_TEST\_VERBOSE - enable debugging output
+* BLOBBER_URL - the URL for the blobber -- defaults to http://localhost:8080/blobber
 
 The script returns 0 if everything succeeded, 1 otherwise.
 Details are logged in $HOME/blobber-passs and $HOME/blobber-fail respectively.
