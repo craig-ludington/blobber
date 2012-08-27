@@ -5,21 +5,27 @@
 
 ### Java virtual machine
 
-Any recent Java virtual machine (JVM) with version 1.6 or later will do.
+Java 7 is required because we use java.nio.files.File which is new in 1.7.
+You'll need a browser (curl won't work because of the "Accept License Agreement" step.
+Go to 
 
-Type this at the command line:
+  http://www.oracle.com/technetwork/java/javase/downloads/java-se-jdk-7-download-432154.html
 
-    $ java -version
-    java version "1.6.0_33"
-    Java(TM) SE Runtime Environment (build 1.6.0_33-b03-424-11M3720)
-    Java HotSpot(TM) 64-Bit Server VM (build 20.8-b03-424, mixed mode)
+and check the "Accept License Agreement" radio button then click the link for 
+
+  http://download.oracle.com/otn-pub/java/jdk/7/jdk-7-linux-i586.tar.gz
+
+Now install Java 7. Good directions for installing Java on Ubuntu:
+
+  http://alexander.holbreich.org/2011/11/java-7-on-debian/
+
+Test the Java version
+  $ java -version
+  java version "1.7.0_06"
+  Java(TM) SE Runtime Environment (build 1.7.0_06-b24)
+  Java HotSpot(TM) Server VM (build 23.2-b09, mixed mode)
 
 If you see some output like the above, you're OK.
-Otherwise, go to 
-
-* https://github.com/technomancy/leiningen#installation
-
-and install a JVM.
 
 ## Tomcat
 
@@ -28,14 +34,6 @@ So first you'll have to install Tomcat, then you can deploy the WAR file for Blo
 using Tomcat's web-based management program.
 
 ### Install Tomcat
-
-Complete instructions for installing Tomcat can be found at:
-
-* http://www.zh0ng.net/2011/09/install-and-configure-tomcat-7-under-macosx-or-linux/
-
-#### Alternate Instructions for Installing Tomcat
-If the instructions above don't work for some reason, the following is what we did,
-so feel free to try it instead.
 
 #### Download Tomcat 7.0 
 Go to the Apache Tomcat downloads page and get the latest version (currently 7.0.29):
@@ -88,18 +86,31 @@ If you put Tomcat in /usr/local/tomcat, you can stop Tomcat like this:
 
 ### Deploying Blobber to Tomcat
 
-Tomcat can deploy Blobber directly from Github if you give it the URL.
+Tomcat can deploy the Blobber WAR file directly from Github if you give it the URL.
+(A WAR file is a special archive that Tomcat understands.)
 There's a nice web-based user interface for deploying.  
 You can use the web user interface if you've set up your tomcat-users.xml (see above).
 
+Tomcat also can deploy Blobber just by copying a file to the right directory and restaring Tomcat.
+Use either method -- both work fine.  If you don't have a browser running where the WAR file is,
+copying files may be easier.  Either way, you'll need to get a copy of the WAR file, or at least 
+have its URL.
+
 #### Download the Blobber WAR file
 
-* https://github.com/craig-ludington/blobber/blob/master/target/blobber-0.1.0-SNAPSHOT-standalone.war
+* https://github.com/craig-ludington/blobber/blob/master/target/blobber-0.99.1-standalone.war
 
 If there's a later version, use it instead -- we probably just forgot to update the URL in this document.
 Remember where you put the file (on the server where you installed Tomcat)
 so you can deploy it later with Tomcat, using the web interface.
 
+### Tomcat File Copying Deployment
+#### Copy the WAR File
+Copy or move blobber-0.99.1-standalone.war to 
+#### Restart Tomcat
+
+
+### Tomcat Web Deployment
 #### Start up Tomcat and navigate to the "Manager"
 
 ##### Behind a firewall?
@@ -125,7 +136,7 @@ After you're logged in, you'll be taken to the "Tomcat Web Application Manager" 
 ##### Deploy Blobber
 
 Earlier, you should have gotten the WAR file from
-* https://github.com/craig-ludington/blobber/blob/master/target/blobber-0.1.0-SNAPSHOT-standalone.war
+* https://github.com/craig-ludington/blobber/blob/master/target/blobber-0.99.1-standalone.war
 
 On the Tomcat web user interface, scroll down to the "Deploy" section.
 Look for "WAR file to deploy".
