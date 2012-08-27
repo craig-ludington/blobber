@@ -139,8 +139,8 @@ You can override that by setting an environment variable:
 
 For example:
 
-        export BLOBBER\_ROOT\_DIRECTORY=/var/blobs
-        export JAVA\_HOME=/usr/local/java
+        export BLOBBER_ROOT_DIRECTORY=/var/blobs
+        export JAVA_HOME=/usr/local/java
         /usr/local/tomcat/bin/startup.sh
 
 #### Final steps
