@@ -74,12 +74,12 @@ There are scripts for starting and shutting down Tomcat in the bin directory:
 
 When you run bin/startup.sh, you'll see messages about Tomcat's configuration:
 
-  tomcat # bin/startup.sh 
-  Using CATALINA_BASE:   /usr/local/tomcat
-  Using CATALINA_HOME:   /usr/local/tomcat
-  Using CATALINA_TMPDIR: /usr/local/tomcat/temp
-  Using JRE_HOME:        /Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Home
-  Using CLASSPATH:       /usr/local/tomcat/bin/bootstrap.jar:/usr/local/tomcat/bin/tomcat-juli.jar
+        tomcat # bin/startup.sh 
+        Using CATALINA_BASE:   /usr/local/tomcat
+        Using CATALINA_HOME:   /usr/local/tomcat
+        Using CATALINA_TMPDIR: /usr/local/tomcat/temp
+        Using JRE_HOME:        /Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Home
+        Using CLASSPATH:       /usr/local/tomcat/bin/bootstrap.jar:/usr/local/tomcat/bin/tomcat-juli.jar
 
 #### Check for Java 7
 Look carefully at JRE_HOME.  Make sure it is the directory where you installed Java 7.
@@ -91,21 +91,21 @@ setting the environment variable JAVA_HOME:
 * export JAVA_HOME='/path/to/java7/'
 
 For example:
-  tomcat # export JAVA_HOME='/Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Home'
-  tomcat # bin/startup.sh 
-  Using CATALINA_BASE:   /usr/local/tomcat
-  Using CATALINA_HOME:   /usr/local/tomcat
-  Using CATALINA_TMPDIR: /usr/local/tomcat/temp
-  Using JRE_HOME:        /Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Home
-  Using CLASSPATH:       /usr/local/tomcat/bin/bootstrap.jar:/usr/local/tomcat/bin/tomcat-juli.jar
-  tomcat # 
+        tomcat # export JAVA_HOME='/Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Home'
+        tomcat # bin/startup.sh 
+        Using CATALINA_BASE:   /usr/local/tomcat
+        Using CATALINA_HOME:   /usr/local/tomcat
+        Using CATALINA_TMPDIR: /usr/local/tomcat/temp
+        Using JRE_HOME:        /Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Home
+        Using CLASSPATH:       /usr/local/tomcat/bin/bootstrap.jar:/usr/local/tomcat/bin/tomcat-juli.jar
+        tomcat # 
 
 After Tomcat is started, use the Tomcat Manager application to confirm the Java version.
 Click "Server Status" and look for:
 
-  Server Information
-  Tomcat Version	JVM Version	JVM Vendor	OS Name	OS Version	OS Architecture	Hostname	IP Address
-  Apache Tomcat/7.0.29	1.7.0_06-b24	Oracle Corporation	Mac OS X	10.7.4	x86_64	roshi.local	192.168.2.103
+        Server Information
+        Tomcat Version	JVM Version	JVM Vendor	OS Name	OS Version	OS Architecture	Hostname	IP Address
+        Apache Tomcat/7.0.29	1.7.0_06-b24	Oracle Corporation	Mac OS X	10.7.4	x86_64	roshi.local	192.168.2.103
 
 #### Deploy the Blobber application
 
@@ -138,9 +138,9 @@ You can override that by setting an environment variable:
 
 For example:
 
-  export BLOBBER_ROOT_DIRECTORY=/var/blobs
-  export JAVA_HOME=/usr/local/java
-  /usr/local/tomcat/bin/startup.sh
+        export BLOBBER_ROOT_DIRECTORY=/var/blobs
+        export JAVA_HOME=/usr/local/java
+        /usr/local/tomcat/bin/startup.sh
 
 #### Final steps
 
