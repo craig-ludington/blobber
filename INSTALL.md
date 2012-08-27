@@ -19,10 +19,11 @@ Now install Java 7. Good directions for installing Java on Ubuntu:
   http://alexander.holbreich.org/2011/11/java-7-on-debian/
 
 Test the Java version
-  $ java -version
-  java version "1.7.0\_06"
-  Java(TM) SE Runtime Environment (build 1.7.0\_06-b24)
-  Java HotSpot(TM) Server VM (build 23.2-b09, mixed mode)
+
+      $ java -version
+      java version "1.7.0_06"
+      Java(TM) SE Runtime Environment (build 1.7.0_06-b24)
+      Java HotSpot(TM) Server VM (build 23.2-b09, mixed mode)
 
 If you see some output like the above, you're OK.
 
@@ -42,14 +43,25 @@ Go to the Apache Tomcat downloads page and get the latest version (currently 7.0
 
 * http://tomcat.apache.org/download-70.cgi
 
+Under "Binary Distributions" and the "Core" section, get "tar.gz".
+
 #### Unpack Tomcat in /usr/local
 * sudo bash
 * cd /usr/local
 * tar xzf $THE\_TOMCAT\_TAR\_FILE         # Obviously an example ;)  -- use the real file name!
 * cd /usr/local/$NEW\_TOMCAT\_DIRECTORY  # ditto
 
+This will make a directory called
+
+* /usr/local/apache-tomcat-7.0.29/
+
+If you like, make a symbolic link:
+
+* ln -s /usr/local/apache-tomcat-7.0.29/ /usr/local/tomcat
+
 #### Configure Tomcat
-In the config/ subdirectory of the Tomcat installation, you'll find a file named:
+In the conf/ subdirectory of the Tomcat installation, you'll find a file named:
+
 * tomcat-users.xml
 
 Edit that file.  In the tomcat-users element, add two roles, and a username with a password:
@@ -102,6 +114,20 @@ For example:
         tomcat # 
 
 After Tomcat is started, use the Tomcat Manager application to confirm the Java version.
+
+#### Tomcat Server Status and  Manager Application
+
+When Tomcat is installed, the root of the Tomcat server has several useful links.
+Visit Tomcat in your browser:
+
+* http://localhost:8080/
+
+You'll see three buttons on the right-hand side:
+
+* Server Status
+* Manager App
+* Host Manager
+
 Click "Server Status" and look for:
 
         Server Information
