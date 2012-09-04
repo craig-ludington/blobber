@@ -20,8 +20,11 @@
   (GET    ["//:uuid" :uuid uuid-regexp] [uuid]         (storage/fetch uuid))
   (DELETE ["/:uuid"  :uuid uuid-regexp] [uuid]         (storage/delete uuid))
   (DELETE ["//:uuid" :uuid uuid-regexp] [uuid]         (storage/delete uuid))
-  (POST   "/"                           { body :body } (storage/create (slurp body)))
+  (POST   "/"                           { body :body } (storage/create body)    ;; body is org.eclipse.jetty.server.HttpInput
+          )
   (ANY    "*"                           []             (route/not-found (str "<h1>Key not found.</h1>"))))
+
+
 
 (def application (-> (handler/site routes)
                      (wrap-with-plaintext-logger)

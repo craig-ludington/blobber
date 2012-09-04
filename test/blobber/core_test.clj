@@ -1,5 +1,6 @@
 (ns blobber.core-test
   (:require [conch.core :as sh])
+  (:import (java.io StringReader))
   (:use clojure.test
         blobber.core
         blobber.storage))
@@ -22,18 +23,20 @@
     (is (= (response :status) 201))
     (is (re-matches  blobber.core/uuid-regexp (response :body)))))
 
-(deftest fetch-test
-    (let [data "Europol DES pink noise Abu Ghraib CNCIS North Korea Manfurov White Water spies Geraldton IMF"
-          create-response (create data)
-          key (create-response :body)
-          ;; Good fetch
-          fetch-response (fetch key)]
-      (is (= 200 (fetch-response :status)))
-      (is (= data (fetch-response :body)))
-      ;; Bad fetch
-      (let [bad-fetch-response (fetch "This is NOT a key!")]
-        (is (= 410 (bad-fetch-response :status)))
-        (is (= nil (bad-fetch-response :body))))))
+(deftest good-fetch-test
+  (let [expected    "Europol DES pink noise Abu Ghraib CNCIS North Korea Manfurov White Water spies Geraldton IMF"
+        key         (:body (create (StringReader. expected)))
+        response    (fetch key)
+        inputstream (:body response)
+        fetched     (byte-array (.available inputstream))]
+    (.read inputstream fetched)
+    (is (= (seq fetched) (seq (.getBytes expected))))
+    (is (= 200 (response :status)))))
+
+(deftest bad-fetch-test
+  (let [response (fetch "This is NOT a key!")]
+    (is (= 410 (response :status)))
+    (is (= nil (response :body)))))
 
 (deftest delete-test
     (let [data "Europol DES pink noise Abu Ghraib CNCIS North Korea Manfurov White Water spies Geraldton IMF"
