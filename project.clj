@@ -8,5 +8,5 @@
                  [ring/ring-devel "1.1.1"]
                  [ring.middleware.logger "0.2.2"]
                  [compojure "1.1.1"]
-                 [filesystem-trie "0.99.1"]]
+                 [filesystem-trie "0.99.2"]]
   :ring {:handler blobber.core/application} )

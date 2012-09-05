@@ -55,38 +55,25 @@
         (is (= 410 (fetch-response :status)))
         (is (= nil (fetch-response :body))))))
 
-(deftest routes-with-extra-forward-slash-test
-  ;; Tolerate extra / before the key in GET and DELETE
-  (let [bad-url (str "//" (java.util.UUID/randomUUID))
-        good-url (str "/" (java.util.UUID/randomUUID))
-        bad-get {:server-port 8080
-                 :server-name "localhost"
-                 :remote-addr "127.0.0.1"
-                 :url bad-url
-                 :uri bad-url
-                 :scheme :http
-                 :request-method :get
-                 :headers {} }
-        good-get    (assoc bad-get  :url good-url :uri good-url)
-        bad-delete  (assoc bad-get  :request-method :delete)
-        good-delete (assoc good-get :request-method :delete) ]
-    [bad-get good-get bad-delete good-delete]
-    ;; (is (= 410
-    ;;        (:status (routes good-get))
-    ;;        (:status (routes bad-get))
-    ;;        (:status (routes bad-delete))
-    ;;        (:status (routes good-delete))))
-    ))
-
-(if false
-
-  (let [bad-url (str "//" (java.util.UUID/randomUUID))
-        x (blobber.core/routes {:server-port 8080
-                                :server-name "localhost"
-                                :remote-addr "127.0.0.1"
-                                :url bad-url
-                                :uri bad-url
-                                :scheme :http
-                                :request-method :get
-                                :headers {} })]
-    (:status x)))
+;; TODO Either create the files to GET or DELETE or test the routes independently of the filesystem.
+;; (deftest routes-with-extra-forward-slash-test
+;;   ;; Tolerate extra / before the key in GET and DELETE
+;;   (let [bad-url (str "//" (java.util.UUID/randomUUID))
+;;         good-url (str "/" (java.util.UUID/randomUUID))
+;;         bad-get {:server-port 8080
+;;                  :server-name "localhost"
+;;                  :remote-addr "127.0.0.1"
+;;                  :url bad-url
+;;                  :uri bad-url
+;;                  :scheme :http
+;;                  :request-method :get
+;;                  :headers {} }
+;;         good-get    (assoc bad-get  :url good-url :uri good-url)
+;;         bad-delete  (assoc bad-get  :request-method :delete)
+;;         good-delete (assoc good-get :request-method :delete) ]
+;;     (is (= 410
+;;            (:status (routes bad-get))
+;;            (:status (routes bad-delete))))
+;;     (is (= 200
+;;            (:status (routes good-get))
+;;            (:status (routes good-delete))))))
