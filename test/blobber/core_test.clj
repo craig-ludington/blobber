@@ -1,5 +1,6 @@
 (ns blobber.core-test
   (:require [conch.core :as sh])
+  (:import (java.io StringReader))
   (:use clojure.test
         blobber.core
         blobber.storage))
@@ -22,18 +23,20 @@
     (is (= (response :status) 201))
     (is (re-matches  blobber.core/uuid-regexp (response :body)))))
 
-(deftest fetch-test
-    (let [data "Europol DES pink noise Abu Ghraib CNCIS North Korea Manfurov White Water spies Geraldton IMF"
-          create-response (create data)
-          key (create-response :body)
-          ;; Good fetch
-          fetch-response (fetch key)]
-      (is (= 200 (fetch-response :status)))
-      (is (= data (fetch-response :body)))
-      ;; Bad fetch
-      (let [bad-fetch-response (fetch "This is NOT a key!")]
-        (is (= 410 (bad-fetch-response :status)))
-        (is (= nil (bad-fetch-response :body))))))
+(deftest good-fetch-test
+  (let [expected    "Europol DES pink noise Abu Ghraib CNCIS North Korea Manfurov White Water spies Geraldton IMF"
+        key         (:body (create (StringReader. expected)))
+        response    (fetch key)
+        inputstream (:body response)
+        fetched     (byte-array (.available inputstream))]
+    (.read inputstream fetched)
+    (is (= (seq fetched) (seq (.getBytes expected))))
+    (is (= 200 (response :status)))))
+
+(deftest bad-fetch-test
+  (let [response (fetch "This is NOT a key!")]
+    (is (= 410 (response :status)))
+    (is (= nil (response :body)))))
 
 (deftest delete-test
     (let [data "Europol DES pink noise Abu Ghraib CNCIS North Korea Manfurov White Water spies Geraldton IMF"
@@ -52,38 +55,25 @@
         (is (= 410 (fetch-response :status)))
         (is (= nil (fetch-response :body))))))
 
-(deftest routes-with-extra-forward-slash-test
-  ;; Tolerate extra / before the key in GET and DELETE
-  (let [bad-url (str "//" (java.util.UUID/randomUUID))
-        good-url (str "/" (java.util.UUID/randomUUID))
-        bad-get {:server-port 8080
-                 :server-name "localhost"
-                 :remote-addr "127.0.0.1"
-                 :url bad-url
-                 :uri bad-url
-                 :scheme :http
-                 :request-method :get
-                 :headers {} }
-        good-get    (assoc bad-get  :url good-url :uri good-url)
-        bad-delete  (assoc bad-get  :request-method :delete)
-        good-delete (assoc good-get :request-method :delete) ]
-    [bad-get good-get bad-delete good-delete]
-    ;; (is (= 410
-    ;;        (:status (routes good-get))
-    ;;        (:status (routes bad-get))
-    ;;        (:status (routes bad-delete))
-    ;;        (:status (routes good-delete))))
-    ))
-
-(if false
-
-  (let [bad-url (str "//" (java.util.UUID/randomUUID))
-        x (blobber.core/routes {:server-port 8080
-                                :server-name "localhost"
-                                :remote-addr "127.0.0.1"
-                                :url bad-url
-                                :uri bad-url
-                                :scheme :http
-                                :request-method :get
-                                :headers {} })]
-    (:status x)))
+;; TODO Either create the files to GET or DELETE or test the routes independently of the filesystem.
+;; (deftest routes-with-extra-forward-slash-test
+;;   ;; Tolerate extra / before the key in GET and DELETE
+;;   (let [bad-url (str "//" (java.util.UUID/randomUUID))
+;;         good-url (str "/" (java.util.UUID/randomUUID))
+;;         bad-get {:server-port 8080
+;;                  :server-name "localhost"
+;;                  :remote-addr "127.0.0.1"
+;;                  :url bad-url
+;;                  :uri bad-url
+;;                  :scheme :http
+;;                  :request-method :get
+;;                  :headers {} }
+;;         good-get    (assoc bad-get  :url good-url :uri good-url)
+;;         bad-delete  (assoc bad-get  :request-method :delete)
+;;         good-delete (assoc good-get :request-method :delete) ]
+;;     (is (= 410
+;;            (:status (routes bad-get))
+;;            (:status (routes bad-delete))))
+;;     (is (= 200
+;;            (:status (routes good-get))
+;;            (:status (routes good-delete))))))
