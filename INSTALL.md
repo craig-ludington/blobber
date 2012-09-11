@@ -60,12 +60,8 @@ Edit that file.  In the tomcat-users element, add a "manager-gui" rolename, and 
 Now the user "hacker" can use the Tomcat administrative web interface and deploy Blobber.
 
 #### Starting Tomcat
-Blobber works right out of the box, but if you want to customize it, there are a couple of 
-environment variables to set:
-* BLOBBER_LISTEN_PORT
-Blobber binds to this port and accepts HTTP requests.
-Default is 8080.
-FIXME!!! Under Tomcat, this probably doesn't work.  Make better instructions.  FIXME!!!
+Blobber works right out of the box, but if you want to customize it, there are is an
+environment variable to set:
 
 * BLOBBER_ROOT_DIRECTORY
 Blobber creates its filesystem-based trie (http://en.wikipedia.org/wiki/Trie) in this directory.
@@ -98,7 +94,7 @@ have its URL.
 
 #### Download the Blobber WAR file
 
-* https://github.com/craig-ludington/blobber/blob/master/target/blobber-0.99.1-standalone.war
+* https://github.com/craig-ludington/blobber/blob/master/target/blobber-1.0.0-standalone.war
 
 If there's a later version, use it instead -- we probably just forgot to update the URL in this document.
 Remember where you put the file (on the server where you installed Tomcat)
@@ -106,43 +102,20 @@ so you can deploy it later with Tomcat, using the web interface.
 
 ### Tomcat File Copying Deployment
 #### Copy the WAR File
-Copy or move blobber-0.99.1-standalone.war to 
+Copy or move blobber-1.0.0-standalone.war to 
 #### Restart Tomcat
 
 
 ### Tomcat Web Deployment
-#### Start up Tomcat and navigate to the "Manager"
-
-##### Behind a firewall?
-If the machine where you installed Tomcat is behind a firewall, you may 
-have to do some ssh port-forwarding to get to Tomcat with your browser.
-
-For example, if you installed on example.com and your user name there is "bob",
-try ssh port-forwarding something like this:
-
-* ssh -L 9000:example.com:8080 bob@example.com
-
-Then you can use your local browser to access Tomcat like this:
-
-* http://localhost:9000/
-
-##### Log in to Tomcat
-Use the user-name and password for the manager-gui rolename that you configured 
-in config/tomcat-users.xml.
-In our example above, that was "hacker" and "SeKriT".
-
-After you're logged in, you'll be taken to the "Tomcat Web Application Manager" page.
 
 ##### Deploy Blobber
 
 Earlier, you should have gotten the WAR file from
-* https://github.com/craig-ludington/blobber/blob/master/target/blobber-0.99.1-standalone.war
+* https://github.com/craig-ludington/blobber/blob/master/target/blobber-1.0.0-standalone.war
 
-On the Tomcat web user interface, scroll down to the "Deploy" section.
-Look for "WAR file to deploy".
-There's a button "Choose file".
-Use it to select the WAR file you downloaded.
-Press the Deploy button.
+Copy the WAR file to the Tomcat webapps/ directory and remove the webapps/blobber/ directory and all its contents.
+
+Then restart Tomcat.
 
 ##### Make sure Tomcat is happy
 Look at the top of the Tomcat Web Application Manager page for the list of Applications.
@@ -153,18 +126,8 @@ you should see:
 
 * I'm Blobber.
 
-
-
-## Smoke Test
-There's a quick smoke-test shell script that uses curl to POST, GET, and DELETE blobs.
-Copy it from:
-* https://github.com/craig-ludington/blobber/blob/master/test-with-curl
-Then run it with:
-* ./test-with-curl
-
-You can look at the output to make sure everything's working.
-
-You can also look at Blobber's storage using ordinary Unix shell commands:
+##### Storage
+You can look at Blobber's storage using ordinary Unix shell commands:
 
 * ls -l /var/blobs
 * find /var/blobs
@@ -172,8 +135,19 @@ You can also look at Blobber's storage using ordinary Unix shell commands:
 
 Blobs are in leaf directories.
 The name of the file containing a blob is "blob".
-Who would have guessed?
+There are two parallel directory hierarchies named key/ and digest/.
 
-* /var/blobs/1/1/4/6/c/4/5/5/-/8/2/b/6/-/4/5/d/b/-/b/d/3/2/-/f/c/2/4/2/7/8/c/0/8/7/9/blob
+The key/ directory contains paths to blobs by the GUID that is given out to the client as a key.
+
+The digest/ direcgtory contains paths to blobs based on the SHA-256 that is used internally as an identity for the blob.
+
+Each leaf node (the file called "blob") has a link count of at least two -- the link in the key/ directory and the link in the digest/ directory.
+
+If two identical blobs are posted, a key/ directory entry is created for each one.
+Both are hard links to the same entry in the digest/ directory.
+This implements reference-counted storage in the most natural way on the Unix filesystem.
+
+* /var/blobs/key/f/e/6/2/4/b/f/4/-/f/8/6/b/-/4/3/4/b/-/9/a/f/f/-/8/3/6/3/6/0/9/9/e/7/2/2/blob
+* /var/blobs/digest/0/0/d/3/1/0/7/c/b/2/9/4/a/e/0/a/f/3/5/6/2/7/f/2/7/1/4/a/8/b/e/4/a/f/9/b/a/5/4/9/4/6/c/6/f/b/9/2/9/2/e/a/5/2/6/c/d/a/2/5/7/5/6/7/blob
 
 
