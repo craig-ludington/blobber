@@ -78,6 +78,17 @@ The "manager-gui" role is valuable for keeping Tomcat and Blobber running throug
 user interface.
 
 #### Starting Tomcat
+Blobber works right out of the box, but if you want to customize it, there are is an
+environment variable to set:
+
+* BLOBBER_ROOT_DIRECTORY
+Blobber creates its filesystem-based trie (http://en.wikipedia.org/wiki/Trie) in this directory.
+Default is $HOME/blobs/.
+
+If you put Tomcat in /usr/local/tomcat, you can start Tomcat like this:
+* sudo bash
+* export BLOBBER_ROOT_DIRECTORY=/var/blobs 
+* /usr/local/tomcat/bin/startup.sh
 
 There are scripts for starting and shutting down Tomcat in the bin directory:
 
@@ -104,6 +115,24 @@ setting the environment variable JAVA\_HOME:
 
 For example:
 
+### Tomcat File Copying Deployment
+#### Fetch the WAR file
+* https://github.com/craig-ludington/blobber/blob/master/target/blobber-1.0.0-standalone.war
+
+#### Copy the WAR File
+
+Copy or move blobber-1.0.0-standalone.war to the Tomcat webapps/ directory.
+The base name of the WAR file will be the path part of the URL.
+
+For example:
+
+* cp blobber-1.0.0-standalone.war /usr/local/tomcat/webapps/blobber_v1
+
+Will give you a URL path fragment of "blobber_v1".
+
+
+#### Restart Tomcat
+=======
         tomcat # export JAVA_HOME='/Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Home'
         tomcat # bin/startup.sh 
         Using CATALINA_BASE:   /usr/local/tomcat
@@ -112,6 +141,7 @@ For example:
         Using JRE_HOME:        /Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Home
         Using CLASSPATH:       /usr/local/tomcat/bin/bootstrap.jar:/usr/local/tomcat/bin/tomcat-juli.jar
         tomcat # 
+>>>>>>> 337e20595cb8132d99b5aea4f07d73e565cd528c
 
 After Tomcat is started, use the Tomcat Manager application to confirm the Java version.
 
@@ -134,28 +164,6 @@ Click "Server Status" and look for:
         Tomcat Version	JVM Version	JVM Vendor	OS Name	OS Version	OS Architecture	Hostname	IP Address
         Apache Tomcat/7.0.29	1.7.0_06-b24	Oracle Corporation	Mac OS X	10.7.4	x86_64	roshi.local	192.168.2.103
 
-#### Deploy the Blobber application
-
-##### Download the Blobber WAR file
-
-* https://github.com/craig-ludington/blobber/blob/master/target/blobber-0.99.1-standalone.war
-
-If there's a later version, use it instead -- we probably just forgot to update the URL in this document.
-Remember where you put the file (on the server where you installed Tomcat).
-
-
-##### Deploy Blobber to Tomcat
-When you deploy Blobber, you'll be challenged for a username/password;
-use the credentials you set up in conf/tomcat-users.xml for the "manager-script" role.
-
-Access this URL from your browser:
-
-*  http://localhost:8080/manager/text/deploy?path=/blobber&war=file:/Users/craigl/src/blobber/target/blobber-0.99.1-standalone.war
-
-You should see this in response:
-
-*  OK - Deployed application at context path /blobber
-
 #### Configure Blobber storage
 
 By default, Blobber stores its data in $HOME/blobs.  That's probably not where you want it.
@@ -169,8 +177,6 @@ For example:
         export JAVA_HOME=/usr/local/java
         /usr/local/tomcat/bin/startup.sh
 
-#### Final steps
-
 ##### Make sure Tomcat is happy
 Look at the top of the Tomcat Web Application Manager page for the list of Applications.
 Make sure Blobber is there, and that "Running" is "true".
@@ -179,24 +185,8 @@ Click on the Blobber link (/blobber) and you should see:
 
 * I'm Blobber.
 
-There's a quick smoke-test shell script that uses curl to POST, GET, and DELETE blobs.
-Copy it from:
-
-* https://github.com/craig-ludington/blobber/blob/master/test-with-curl
-
-Then run it like this:
-
-* ./test-with-curl
-
-There are two environment variables used by test-with-curl
-
-* BLOBBER\_TEST\_VERBOSE - enable debugging output
-* BLOBBER_URL - the URL for the blobber -- defaults to http://localhost:8080/blobber
-
-The script returns 0 if everything succeeded, 1 otherwise.
-Details are logged in $HOME/blobber-passs and $HOME/blobber-fail respectively.
-
-You can also look at Blobber's storage using ordinary Unix shell commands:
+##### Storage
+You can look at Blobber's storage using ordinary Unix shell commands:
 
 * ls -l /var/blobs
 * find /var/blobs
@@ -204,6 +194,17 @@ You can also look at Blobber's storage using ordinary Unix shell commands:
 
 Blobs are in leaf directories.
 The name of the file containing a blob is "blob".
-Who would have guessed?
+There are two parallel directory hierarchies named key/ and digest/.
 
-* /var/blobs/1/1/4/6/c/4/5/5/-/8/2/b/6/-/4/5/d/b/-/b/d/3/2/-/f/c/2/4/2/7/8/c/0/8/7/9/blob
+The key/ directory contains paths to blobs by the GUID that is given out to the client as a key.
+
+The digest/ direcgtory contains paths to blobs based on the SHA-256 that is used internally as an identity for the blob.
+
+Each leaf node (the file called "blob") has a link count of at least two -- the link in the key/ directory and the link in the digest/ directory.
+
+If two identical blobs are posted, a key/ directory entry is created for each one.
+Both are hard links to the same entry in the digest/ directory.
+This implements reference-counted storage in the most natural way on the Unix filesystem.
+
+* /var/blobs/key/f/e/6/2/4/b/f/4/-/f/8/6/b/-/4/3/4/b/-/9/a/f/f/-/8/3/6/3/6/0/9/9/e/7/2/2/blob
+* /var/blobs/digest/0/0/d/3/1/0/7/c/b/2/9/4/a/e/0/a/f/3/5/6/2/7/f/2/7/1/4/a/8/b/e/4/a/f/9/b/a/5/4/9/4/6/c/6/f/b/9/2/9/2/e/a/5/2/6/c/d/a/2/5/7/5/6/7/blob

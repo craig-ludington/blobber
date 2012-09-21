@@ -13,7 +13,7 @@ to a REST API, but it can be used for anything you'd like to store.
 BlobberClient is a Blobber client library, written in Ruby.
 It's been tested on Ruby 1.8.7 and Ruby 1.9.3.
 
-Blobberclient provides a thin layer of abstraction over the HTTP API
+BlobberClient provides a thin layer of abstraction over the HTTP API
 that Blobber supports.
 
 ## Blobber Functional Specification
@@ -27,12 +27,12 @@ Blobber is distributed as a Java WAR suitable for running under Tomcat 7.
 Blobber stores client data in ordinary Unix files, in a configurable 
 directory.  The root of the Blobber storage may be specified in the environment variable BLOBBER_ROOT_DIRECTORY,  It defaults to $HOME/blobs/.
 
-Installing Blobber is covered in a separate document (https://github.com/craig-ludington/blobber/blob/master/INSTALL.md). Essentially, it's Installing and configuring Tomcat then deploying the WAR file.  Tomcat has a web service that manages deployment of WAR files.
+Installing Blobber is covered in a separate document (https://github.com/craig-ludington/blobber/blob/master/INSTALL.md). Essentially, it's installing and configuring Tomcat then deploying the WAR file.  Tomcat has a web service that manages deployment of WAR files.
 
 Blobber does not provide client authentication.  Instead, it relies on network firewall rules and the like to restrict access to specified clients.
 
 #### HTTP API
-The HTTP API doesn't require anything special to use.  It's a typical REST API.  In addition to the Blobberclient, we've also used curl, wget, and Chrome.
+The HTTP API doesn't require anything special to use.  It's a typical REST API.  In addition to the BlobberClient, we've also used curl, wget, and Chrome.
 
 The URL for Blobber depends on your configuration, so for simplicity's sake we'll just use "http://example.com/blobber" as the base URL in our examples.
 
