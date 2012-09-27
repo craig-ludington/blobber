@@ -14,7 +14,7 @@
   (let [key (trie/create (root-directory) "health-check test blob")
         blob (and key (trie/fetch (root-directory) key))
         deleted (and blob (trie/delete (root-directory) key))
-        response (rsp/response (str "Serving root:" root-directory))]
+        response (rsp/response (str "Serving root: " (root-directory)))]
     (if deleted
       response
       (rsp/status response 500))))
