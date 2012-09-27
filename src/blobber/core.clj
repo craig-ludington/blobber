@@ -7,8 +7,7 @@
             [clojure.string :as str]
             [ring.util.response]
             [ring.adapter.jetty :as ring]
-            [ring.middleware.logger :as logger]
-            [blobber.storage :as storage]))
+[blobber.storage :as storage]))
 
 (def uuid-regexp #"[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}")
 
@@ -28,7 +27,6 @@
 
 
 (def application (-> (handler/site routes)
-                     (wrap-with-plaintext-logger)
                      (wrap-reload '(blobber.core))
                      (wrap-stacktrace)))
 
