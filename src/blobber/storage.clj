@@ -13,10 +13,11 @@
   []
   (let [key (trie/create (root-directory) "health-check test blob")
         blob (and key (trie/fetch (root-directory) key))
-        deleted (and blob (trie/delete (root-directory) key))]
+        deleted (and blob (trie/delete (root-directory) key))
+        response (rsp/response (str "Serving root:" root-directory))]
     (if deleted
-      (rsp/response nil)
-      (rsp/status (rsp/response "") 500))))
+      response
+      (rsp/status response 500))))
 
 (defn create
   "Create a new BLOB and return its key.
