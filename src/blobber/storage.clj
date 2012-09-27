@@ -2,7 +2,8 @@
   #^{:author "Craig Ludington",
      :doc "Create/fetch/delete BLOBs and return HTTP responses for Ring."}
   (:import (java.io InputStream))
-  (:require [filesystem-trie.core :as trie]
+  (:require [clojure.java.io :as io]
+            [filesystem-trie.core :as trie]
             [ring.util.response :as rsp]))
 
 (defn- root-directory [] (or (System/getenv "BLOBBER_ROOT_DIRECTORY")
@@ -11,7 +12,7 @@
 (defn health-check
   "Exercise the full blob life-cycle and return an HTTP 200 if everything's OK, and an HTTP 500 otherwise."
   []
-  (let [key (trie/create (root-directory) "health-check test blob")
+  (let [key (trie/create (root-directory) (io/as-file "/dev/null"))
         blob (and key (trie/fetch (root-directory) key))
         deleted (and blob (trie/delete (root-directory) key))
         response (rsp/response (str "Serving root: " (root-directory)))]
