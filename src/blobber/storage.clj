@@ -12,9 +12,10 @@
 (defn health-check
   "Exercise the full blob life-cycle and return an HTTP 200 if everything's OK, and an HTTP 500 otherwise."
   []
-  (let [key (trie/create (root-directory) (io/as-file "/dev/null"))
-        blob (and key (trie/fetch (root-directory) key))
-        deleted (and blob (trie/delete (root-directory) key))
+  (let [root (str (root-directory) "/health-check")
+        key (trie/create root (io/as-file "/dev/null"))
+        blob (and key (trie/fetch root key))
+        deleted (and blob (trie/delete root key))
         response (rsp/response (str "Serving root: " (root-directory)))]
     (if deleted
       response
