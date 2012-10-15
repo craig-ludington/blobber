@@ -1,9 +1,7 @@
 (ns blobber.core
   (:use [compojure.core :only [defroutes GET POST DELETE ANY]]
         [ring.middleware reload stacktrace]
-        [ring.middleware.basic-authentication :only [wrap-basic-authentication]]
-;;        [ring.middleware.logger :only [wrap-with-plaintext-logger]]
-        )
+        [ring.middleware.basic-authentication :only [wrap-basic-authentication]])
   (:require [compojure.route :as route]
             [compojure.handler :as handler]
             [clojure.string :as str]
