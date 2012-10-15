@@ -7,7 +7,8 @@
             [clojure.string :as str]
             [ring.util.response]
             [ring.adapter.jetty :as ring]
-            [blobber.storage :as storage]))
+            [blobber.storage :as storage]
+            [blobber.passwd :as passwd]))
 
 (def uuid-regexp #"[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}")
 
@@ -20,15 +21,16 @@
   (GET    ["//:uuid" :uuid uuid-regexp] [uuid]         (storage/fetch uuid))
   (DELETE ["/:uuid"  :uuid uuid-regexp] [uuid]         (storage/delete uuid))
   (DELETE ["//:uuid" :uuid uuid-regexp] [uuid]         (storage/delete uuid))
-  (POST   "/"                           { body :body } (storage/create body)    ;; body is org.eclipse.jetty.server.HttpInput
-          )
+  (POST   "/"                           { body :body } (storage/create body))
   (ANY    "*"                           []             (route/not-found (str "<h1>Key not found.</h1>"))))
 
+(defn- password-file
+  (or (System/getenv "BLOBBER_PASSWORD_FILE") "blobber-passwd"))
+  
 (defn authenticate
   [user password]
-  (and (= user "craig")
-       (= password "letmein")
-       "you're good"))
+  (when (passwd/check-user-password user password (password-file))
+       "authorized"))
 
 (def application (-> (handler/site routes)
                      (wrap-basic-authentication authenticate)

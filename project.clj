@@ -8,5 +8,6 @@
                  [ring/ring-devel "1.1.1"]
                  [compojure "1.1.1"]
                  [ring-basic-authentication "1.0.1"]
+                 [jbcrypt "0.3"]
                  [filesystem-trie "1.0.3"]]
   :ring {:handler blobber.core/application} )
