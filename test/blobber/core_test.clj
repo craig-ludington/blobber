@@ -1,5 +1,4 @@
 (ns blobber.core-test
-  (:require [conch.core :as sh])
   (:import (java.io StringReader))
   (:use clojure.test
         blobber.core
@@ -38,8 +37,6 @@
     (is (= 410 (response :status)))
     (is (= nil (response :body)))))
 
-
-
 (deftest delete-test
     (let [data "Europol DES pink noise Abu Ghraib CNCIS North Korea Manfurov White Water spies Geraldton IMF"
           create-response (create data)
@@ -57,6 +54,3 @@
         (is (= 410 (fetch-response :status)))
         (is (= nil (fetch-response :body))))))
 
-(deftest health-check-test
-  (println "health-check-test looks for file descriptor leaks; there's a create/fetch/delete loop 2048 long!")
-  (dotimes [x 2048] (#'blobber.storage/health-check)))

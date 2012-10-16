@@ -17,7 +17,6 @@
 
 (defroutes routes
   (GET    "/"                           []             "<h1>I'm Blobber.</h1>")
-  (GET    "/status"                     []             (storage/health-check))
   (GET    ["/:uuid"  :uuid uuid-regexp] [uuid]         (storage/fetch uuid))
   (GET    ["//:uuid" :uuid uuid-regexp] [uuid]         (storage/fetch uuid))
   (DELETE ["/:uuid"  :uuid uuid-regexp] [uuid]         (storage/delete uuid))

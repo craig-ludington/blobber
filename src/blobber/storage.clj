@@ -9,18 +9,6 @@
 (defn- root-directory [] (or (System/getenv "BLOBBER_ROOT_DIRECTORY")
                              (str (System/getenv "HOME") "/blobs/")))
 
-(defn health-check
-  "Exercise the full blob life-cycle and return an HTTP 200 if everything's OK, and an HTTP 500 otherwise."
-  []
-  (let [root (str (root-directory) "/health-check")
-        key (trie/create root (io/as-file "/dev/null"))
-        blob (and key (trie/fetch root key))
-        deleted (and blob (trie/delete root key))
-        response (rsp/response (str "Serving root: " (root-directory)))]
-    (if deleted
-      response
-      (rsp/status response 500))))
-
 (defn create
   "Create a new BLOB and return its key.
    Return the key for a newly-created BLOB.
