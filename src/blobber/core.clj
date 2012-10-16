@@ -8,12 +8,13 @@
             [ring.util.response]
             [ring.adapter.jetty :as ring]
             [blobber.storage :as storage]
-            [blobber.passwd :as passwd]))
+            [blobber.password :as password]))
 
 (def uuid-regexp #"[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}")
 
-(defn- listen-port [] (or (System/getenv "BLOBBER_LISTEN_PORT") 8080))
-  
+(defn- listen-port   [] (or (System/getenv "BLOBBER_LISTEN_PORT") 8080))
+(defn- password-file [] (or (System/getenv "BLOBBER_PASSWORD_FILE") "blobber-password"))
+
 (defroutes routes
   (GET    "/"                           []             "<h1>I'm Blobber.</h1>")
   (GET    "/status"                     []             (storage/health-check))
@@ -24,12 +25,9 @@
   (POST   "/"                           { body :body } (storage/create body))
   (ANY    "*"                           []             (route/not-found (str "<h1>Key not found.</h1>"))))
 
-(defn- password-file
-  (or (System/getenv "BLOBBER_PASSWORD_FILE") "blobber-passwd"))
-  
 (defn authenticate
   [user password]
-  (when (passwd/check-user-password user password (password-file))
+  (when (password/check-user-password user password (password-file))
        "authorized"))
 
 (def application (-> (handler/site routes)
