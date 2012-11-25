@@ -1,4 +1,4 @@
-(defproject blobber "1.0.4"
+(defproject blobber "1.0.4-alt-too-many-links"
   :description "Store, fetch, and delete binary large objects (BLOB) in PostgreSQL."
   :url "https://github.com/craig-ludington/blobber"
   :license {:name "Eclipse Public License"
@@ -7,5 +7,5 @@
                  [ring/ring-jetty-adapter "1.1.1"]
                  [ring/ring-devel "1.1.1"]
                  [compojure "1.1.1"]
-                 [filesystem-trie "1.0.3"]]
+                 [filesystem-trie "1.0.3-alt-too-many-links"]]
   :ring {:handler blobber.core/application} )

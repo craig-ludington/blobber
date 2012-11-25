@@ -1,5 +1,4 @@
 (ns blobber.core-test
-  (:require [conch.core :as sh])
   (:import (java.io StringReader))
   (:use clojure.test
         blobber.core
